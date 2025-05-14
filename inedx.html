@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JavaScript Exception Handling Console</title>
+  <style>
+    body {
+      background-color: #1e1e1e;
+      color: #d4d4d4;
+      font-family: monospace;
+      margin: 0;
+      padding: 0;
+    }
+    #console {
+      padding: 20px;
+      white-space: pre-wrap;
+      overflow-y: auto;
+      height: 100vh;
+      box-sizing: border-box;
+    }
+    .log { color: #d4d4d4; }
+    .error { color: #f44747; }
+    .info { color: #569cd6; }
+    .success { color: #6a9955; }
+  </style>
+</head>
+<body>
+  <div id="console"></div>
+
+  <script>
+    const consoleDiv = document.getElementById('console');
+
+    function log(message, type = 'log') {
+      const p = document.createElement('p');
+      p.className = type;
+      p.textContent = message;
+      consoleDiv.appendChild(p);
+      consoleDiv.scrollTop = consoleDiv.scrollHeight;
+    }
+
+    // 1. Handle exception for using undeclared variable
+    try {
+      log("1. Attempting to access undeclared variable...");
+      console.log(myVar); // myVar is not declared
+    } catch (error) {
+      log("1. Undeclared Variable Error: " + error.message, 'error');
+    }
+
+    // 2. Throw "Divide by Zero" error
+    function divide(a, b) {
+      if (b === 0) {
+        throw new Error("Divide by Zero Error");
+      }
+      return a / b;
+    }
+
+    try {
+      log("2. Attempting division by zero...");
+      const result = divide(10, 0);
+      log("2. Division Result: " + result, 'success');
+    } catch (error) {
+      log("2. Division Error: " + error.message, 'error');
+    }
+
+    // 3. Throw "Out of Bound" error
+    function accessArray(arr, index) {
+      if (index < 0 || index >= arr.length) {
+        throw new Error("Out of Bound Error");
+      }
+      return arr[index];
+    }
+
+    try {
+      log("3. Attempting to access array index out of bounds...");
+      let data = [10, 20, 30];
+      const value = accessArray(data, 5);
+      log("3. Array Access: " + value, 'success');
+    } catch (error) {
+      log("3. Array Error: " + error.message, 'error');
+    }
+
+    // 4. Exception handling using finally
+    try {
+      log("4. Attempting division resulting in Infinity...");
+      let result = 10 / 0;
+      if (!isFinite(result)) throw new Error("Invalid division");
+      log("4. Result: " + result, 'success');
+    } catch (error) {
+      log("4. Finally Block Error: " + error.message, 'error');
+    } finally {
+      log("4. Finally block executed.", 'info');
+    }
+  </script>
+</body>
+</html>
